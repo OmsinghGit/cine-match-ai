@@ -1,4 +1,10 @@
+
 from fastapi import FastAPI
+
+from app.database.connection import engine
+from app.models.movie import Movie
+
+Movie.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="CineMatch AI",
