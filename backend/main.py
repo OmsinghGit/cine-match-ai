@@ -4,6 +4,9 @@ from fastapi import FastAPI
 from app.database.connection import engine
 from app.models.movie import Movie
 
+from sqlalchemy.orm import Session
+from app.database.connection import SessionLocal
+
 Movie.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -26,3 +29,22 @@ def health_check():
         "status": "healthy",
         "service": "CineMatch AI Backend"
     }
+
+@app.get("/movies")
+def get_movies():
+    db: Session = SessionLocal()
+
+    movies = db.query(Movie).limit(10).all()
+
+    result = []
+
+    for movie in movies:
+        result.append({
+            "id": movie.id,
+            "title": movie.title,
+            "genre": movie.genre
+        })
+
+    db.close()
+
+    return result
