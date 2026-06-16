@@ -10,11 +10,20 @@ movies = pd.read_csv(MOVIES_PATH)
 
 # Missing values handle
 movies["overview"] = movies["overview"].fillna("")
+movies["genres"] = movies["genres"].fillna("")
+
+movies["combined_features"] = (
+    movies["overview"] + " " +
+    movies["genres"]
+)
 
 # TF-IDF Vectorization
 tfidf = TfidfVectorizer(stop_words="english")
 
-tfidf_matrix = tfidf.fit_transform(movies["overview"])
+
+tfidf_matrix = tfidf.fit_transform(
+    movies["combined_features"]
+)
 
 # Similarity Matrix
 cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
