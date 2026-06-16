@@ -7,6 +7,8 @@ from app.models.movie import Movie
 from sqlalchemy.orm import Session
 from app.database.connection import SessionLocal
 
+from app.services.recommendation import recommend_movies
+
 Movie.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -48,3 +50,12 @@ def get_movies():
     db.close()
 
     return result
+
+@app.get("/recommend")
+def recommend(movie: str):
+    recommendations = recommend_movies(movie)
+
+    return {
+        "movie": movie,
+        "recommendations": recommendations
+    }
