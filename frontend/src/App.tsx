@@ -1,36 +1,42 @@
 import axios from "axios";
-
 import { useState } from "react";
 import "./App.css";
 
 function App() {
   const [movie, setMovie] = useState("");
-
   const [recommendations, setRecommendations] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-
+  const [error, setError] = useState("");
 
   const getRecommendations = async () => {
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
+      setError("");
 
-    const response = await axios.get(
-      `http://127.0.0.1:8000/recommend?movie=${movie}`
-    );
+      const response = await axios.get(
+        `http://127.0.0.1:8000/recommend?movie=${movie}`
+      );
 
-    console.log(response.data);
+      console.log(response.data);
 
-    setRecommendations(
-      response.data.recommendations
-    );
+      setRecommendations(
+        response.data.recommendations
+      );
 
-  } catch (error) {
-    console.error(error);
-    alert("Failed to fetch recommendations.");
-  } finally {
-    setLoading(false);
-  }
-};
+    } catch (error) {
+      console.error(error);
+
+      setRecommendations([]);
+
+      setError(
+        "Movie not found. Try another title."
+      );
+
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container">
       <h1>CineMatch AI 🎬</h1>
@@ -48,7 +54,7 @@ function App() {
         />
 
         <button onClick={getRecommendations}>
-          {loading ? "Loading..." : "Recommend"}
+          {loading ? "Finding Movies..." : "Recommend"}
         </button>
       </div>
 
@@ -57,15 +63,31 @@ function App() {
       </p>
 
       {
+        error && (
+          <p style={{ color: "#ef4444" }}>
+            {error}
+          </p>
+        )
+      }
+
+      {
         recommendations.length > 0 && (
           <div style={{ marginTop: "30px" }}>
             <h2>Recommendations</h2>
 
-            {recommendations.map((movie, index) => (
-              <p key={index}>
-                🎬 {movie}
-              </p>
-            ))}
+            <div className="recommendations-grid">
+              {recommendations.map((movie, index) => (
+                <div key={index} className="movie-card">
+                  <img
+                    src={`https://placehold.co/300x450/1e293b/ffffff?text=${encodeURIComponent(movie)}`}
+                    alt={movie}
+                    className="movie-poster"
+                  />
+
+                  <h3>{movie}</h3>
+                </div>
+              ))}
+            </div>
           </div>
         )
       }
