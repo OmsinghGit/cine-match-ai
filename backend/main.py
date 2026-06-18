@@ -9,12 +9,24 @@ from app.database.connection import SessionLocal
 
 from app.services.recommendation import recommend_movies
 
+from fastapi.middleware.cors import CORSMiddleware
+
 Movie.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="CineMatch AI",
     description="An explainable hybrid movie recommendation system.",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://cine-match-ai-chi.vercel.app"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 from fastapi.middleware.cors import CORSMiddleware
