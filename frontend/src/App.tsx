@@ -12,10 +12,9 @@ function App() {
     try {
       setLoading(true);
       setError("");
-
-      const response = await axios.get(
-        `https://cine-match-ai-backend.onrender.com/recommend?movie=${movie}`
-      );
+    const response = await axios.get(
+      `https://cine-match-ai-backend.onrender.com/recommend?movie=${movie}`
+    );
 
       console.log(response.data);
 
