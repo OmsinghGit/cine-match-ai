@@ -1,5 +1,5 @@
-
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.connection import engine
 from app.models.movie import Movie
@@ -16,7 +16,6 @@ app = FastAPI(
     description="An explainable hybrid movie recommendation system.",
     version="1.0.0"
 )
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,6 +42,7 @@ def health_check():
         "service": "CineMatch AI Backend"
     }
 
+
 @app.get("/movies")
 def get_movies():
     db: Session = SessionLocal()
@@ -61,6 +61,7 @@ def get_movies():
     db.close()
 
     return result
+
 
 @app.get("/recommend")
 def recommend(movie: str):
