@@ -5,6 +5,16 @@ An explainable AI-powered movie recommendation system built using FastAPI, React
 CineMatch AI recommends similar movies based on content analysis using TF-IDF Vectorization and Cosine Similarity.
 
 ---
+## Live Demo
+
+Frontend:
+https://cine-match-ai-chi.vercel.app
+
+Backend API:
+https://cine-match-ai-backend.onrender.com
+
+API Docs:
+https://cine-match-ai-backend.onrender.com/docs
 
 ## 🚀 Features
 
