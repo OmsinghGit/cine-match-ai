@@ -14,7 +14,7 @@ function App() {
       setError("");
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/recommend?movie=${movie}`
+        `https://cine-match-ai-backend.onrender.com/recommend?movie=${movie}`
       );
 
       console.log(response.data);
